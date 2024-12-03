@@ -1,0 +1,13 @@
+influxdb_client == 1.41.0
+pandas == 2.2.1
+duckdb == 0.10.1
+plotly == 5.20.0
+streamlit-authenticator
+streamlit == 1.40.0
+streamlit_extras == 0.4.7
+streamlit-toggle-switch == 1.0.2
+DateTime==4.3
+st-pages == 1.0.1
+requests>=2.27
+extra-streamlit-components >= 0.1.70
+pillow==10.4.0
