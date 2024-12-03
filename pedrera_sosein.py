@@ -124,10 +124,10 @@ where (STR_TO_DATE(`Timestamp`, '%d-%m-%Y %H:%i:%s')> NOW() - INTERVAL var_time_
 order by `Timestamp` DESC;"""
 query1 = query1.replace('var_time_resolution', str(var_time_resolution))
 
-
+from sqlalchemy import text
 with engine.connect() as connection:
 
-    result = connection.execute(query1).fetchall()
+    result = connection.execute(text(query1)).fetchall()
     columns = [col[0] for col in result]
 
             # Combine column names with rows
