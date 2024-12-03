@@ -138,6 +138,8 @@ with engine.connect() as connection:
 
 df = pd.DataFrame(result)
 
+st.write(df)
+
 
 df_calculo_kwh = df.copy()
 
