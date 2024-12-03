@@ -94,12 +94,9 @@ with col3:
 
 
 
-
-
 # Database connection string
 db_url = "mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization"
 engine = create_engine(db_url)
-
 
 
 
@@ -126,7 +123,18 @@ FROM sosein_automatization.datos_sensores_azure
 where (STR_TO_DATE(`Timestamp`, '%d-%m-%Y %H:%i:%s')> NOW() - INTERVAL var_time_resolution MINUTE) and signal_name IN ('TCAP_VASO', 'TCAP_ACS', 'TC_VASO', 'TF_VASO', 'TPLACAS_SALIDA', 'TDAC_VASO', 'TDS_ACS', 'TDE_ACS', 'TDAF_ACS', 'TDAC_ACS', 'TINT_VASO', 'TINT_ACS', 'TDAF_VASO')
 order by `Timestamp` DESC;"""
 query1 = query1.replace('var_time_resolution', str(var_time_resolution))
-df = pd.read_sql(query1, con=engine)
+
+
+with engine.connect() as connection:
+
+    result = connection.execute(query1).fetchall()
+    columns = [col[0] for col in result]
+
+            # Combine column names with rows
+    results_with_headers = [dict(zip(columns, row)) for row in result]
+
+
+df = pd.DataFrame(result)
 
 
 df_calculo_kwh = df.copy()
