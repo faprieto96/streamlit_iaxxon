@@ -1,22 +1,19 @@
 import streamlit as st
-import influxdb_client
+
 import pandas as pd
 from pandas import DataFrame, Series, Timestamp
 from pandas.errors import EmptyDataError
-import duckdb
-import yaml
-from yaml.loader import SafeLoader
+
 import plotly.express as px
 import plotly.graph_objects as go
 import requests
-import datetime
 from datetime import datetime, timedelta
 
 # Database connection parameters
 from sqlalchemy import create_engine
 
 
-st.set_page_config(layout="wide", page_title="SOSEIN + GEO Group")
+st.set_page_config(layout="wide", page_title="Pedrera IAXXON")
 
 #######################################
 # API TIEMPO
@@ -94,9 +91,6 @@ with col3:
 
 
 
-# Database connection string
-db_url = "mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization"
-engine = create_engine(db_url)
 
 
 
@@ -118,32 +112,49 @@ def calculo_horas(time_period):
 
 var_time_resolution = calculo_horas(time_period)
 
-query1 = """SELECT signal_name, valor, `Timestamp`
-FROM sosein_automatization.datos_sensores_azure
-where (STR_TO_DATE(`Timestamp`, '%d-%m-%Y %H:%i:%s')> NOW() - INTERVAL var_time_resolution MINUTE) and signal_name IN ('TCAP_VASO', 'TCAP_ACS', 'TC_VASO', 'TF_VASO', 'TPLACAS_SALIDA', 'TDAC_VASO', 'TDS_ACS', 'TDE_ACS', 'TDAF_ACS', 'TDAC_ACS', 'TINT_VASO', 'TINT_ACS', 'TDAF_VASO')
-order by `Timestamp` DESC;"""
-query1 = query1.replace('var_time_resolution', str(var_time_resolution))
-
-from sqlalchemy import text
-with engine.connect() as connection:
-
-    result = connection.execute(text(query1)).fetchall()
-    columns = [col[0] for col in result]
-
-            # Combine column names with rows
-    results_with_headers = [dict(zip(columns, row)) for row in result]
-
-    connection.close()
 
 
-df = pd.DataFrame(result)
+from sqlalchemy import create_engine, text
+
+try:
+# Database connection string
+    query1 = """SELECT signal_name, valor, `Timestamp`
+    FROM sosein_automatization.datos_sensores_azure
+    where (STR_TO_DATE(`Timestamp`, '%d-%m-%Y %H:%i:%s')> NOW() - INTERVAL var_time_resolution MINUTE) and signal_name IN ('TCAP_VASO', 'TCAP_ACS', 'TC_VASO', 'TF_VASO', 'TPLACAS_SALIDA', 'TDAC_VASO', 'TDS_ACS', 'TDE_ACS', 'TDAF_ACS', 'TDAC_ACS', 'TINT_VASO', 'TINT_ACS', 'TDAF_VASO')
+    order by `Timestamp` DESC;"""
+    query1 = query1.replace('var_time_resolution', str(var_time_resolution))
+
+    db_url = "mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization"
+    engine = create_engine(db_url)
+
+    with engine.connect() as connection:
+
+        result = connection.execute(text(query1)).fetchall()
+        columns = [col[0] for col in result]
+
+                # Combine column names with rows
+        results_with_headers = [dict(zip(columns, row)) for row in result]
+
+        connection.close()
+    
+    df = pd.DataFrame(result)
+    df_calculo_kwh = df.copy()
+
+    df_calculo_kwh['Timestamp'] = pd.to_datetime(df_calculo_kwh['Timestamp'])
+
+
+except: 
+    df = pd.read_csv('datos_pedrera.csv', encoding='utf-8', sep=';')
+    df_calculo_kwh = df.copy()
+
+    df_calculo_kwh['Timestamp'] = pd.to_datetime(df_calculo_kwh['Timestamp'])
+
+
+
 
 st.write(df)
 
 
-df_calculo_kwh = df.copy()
-
-df_calculo_kwh['Timestamp'] = pd.to_datetime(df_calculo_kwh['Timestamp'])
 
 # Floor datetime to the nearest hour
 df_calculo_kwh["Timestamp_hour"] = df_calculo_kwh["Timestamp"].dt.floor("H")
