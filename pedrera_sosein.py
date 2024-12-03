@@ -133,6 +133,8 @@ with engine.connect() as connection:
             # Combine column names with rows
     results_with_headers = [dict(zip(columns, row)) for row in result]
 
+    connection.close()
+
 
 df = pd.DataFrame(result)
 
