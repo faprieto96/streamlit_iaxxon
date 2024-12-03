@@ -144,7 +144,8 @@ try:
 
 
 except: 
-    df = pd.read_csv('datos_pedrera.csv', encoding='utf-8', sep=';')
+    import os
+    df = pd.read_csv(os.path.join(os.getcwd(), 'datos_pedrera.csv'), encoding='utf-8', sep=';')
     df_calculo_kwh = df.copy()
 
     df_calculo_kwh['Timestamp'] = pd.to_datetime(df_calculo_kwh['Timestamp'])
