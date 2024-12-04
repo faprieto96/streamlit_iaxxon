@@ -165,7 +165,7 @@ if st.session_state['authentication_status']:
     order by `Timestamp` DESC;"""
     query1 = query1.replace('var_time_resolution', str(var_time_resolution))
 
-    db_url = f'mysql+mysqlconnector://admin_sos:{st.secrets["db_password"]}@185.47.245.164/sosein_automatization'
+    db_url = 'mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization'
     engine = create_engine(db_url)
 
     with engine.connect() as connection:
