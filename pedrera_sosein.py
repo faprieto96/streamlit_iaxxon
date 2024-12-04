@@ -29,7 +29,20 @@ import yaml
 from yaml.loader import SafeLoader
 import os
 
+def download_info (query1):
+    with engine.connect() as connection:
 
+        result = connection.execute(text(query1)).fetchall()
+        columns = [col[0] for col in result]
+
+                # Combine column names with rows
+        results_with_headers = [dict(zip(columns, row)) for row in result]
+
+        connection.close()
+
+    df = pd.DataFrame(results_with_headers)
+
+    return df
 
 with open(os.path.join(os.getcwd(), 'config.yaml')) as file:
     config = yaml.load(file, Loader=SafeLoader)
@@ -168,17 +181,8 @@ if st.session_state['authentication_status']:
     db_url = 'mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization'
     engine = create_engine(db_url)
 
-    with engine.connect() as connection:
 
-        result = connection.execute(text(query1)).fetchall()
-        columns = [col[0] for col in result]
-
-                # Combine column names with rows
-        results_with_headers = [dict(zip(columns, row)) for row in result]
-
-        connection.close()
-
-    df = pd.DataFrame(result)
+    df = download_info (query1)
 
     if len(df)<0:
         st.write('No hay datos para mostrar')
