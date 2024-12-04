@@ -180,7 +180,7 @@ if st.session_state['authentication_status']:
 
     df = pd.DataFrame(result)
 
-    if len(df)==0:
+    if len(df)<0:
         st.write('No hay datos para mostrar')
 
     else:
