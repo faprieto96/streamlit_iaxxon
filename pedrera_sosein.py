@@ -124,7 +124,7 @@ try:
     order by `Timestamp` DESC;"""
     query1 = query1.replace('var_time_resolution', str(var_time_resolution))
 
-    db_url = "mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization"
+    db_url = f'mysql+mysqlconnector://admin_sos:{st.secrets["db_password"]}@185.47.245.164/sosein_automatization'
     engine = create_engine(db_url)
 
     with engine.connect() as connection:
@@ -136,14 +136,14 @@ try:
         results_with_headers = [dict(zip(columns, row)) for row in result]
 
         connection.close()
-    
+
     df = pd.DataFrame(result)
     df_calculo_kwh = df.copy()
 
     df_calculo_kwh['Timestamp'] = pd.to_datetime(df_calculo_kwh['Timestamp'])
 
 
-except: 
+except:
     import os
     df = pd.read_csv(os.path.join(os.getcwd(), 'datos_pedrera.csv'), encoding='utf-8', sep=';')
     df_calculo_kwh = df.copy()
