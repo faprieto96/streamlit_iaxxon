@@ -191,10 +191,6 @@ if st.session_state['authentication_status']:
 
 
 
-    st.write(df)
-
-
-
     # Floor datetime to the nearest hour
     df_calculo_kwh["Timestamp_hour"] = df_calculo_kwh["Timestamp"].dt.floor("H")
 
