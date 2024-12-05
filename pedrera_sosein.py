@@ -205,9 +205,15 @@ if st.session_state['authentication_status']:
 
     generacion_kwh = pivot_df[pivot_df['kwh']>0]['kwh'].sum()
 
+    col1, col2, col3 = st.columns(3)
 
-    st.subheader('Datos de Producción Energía')
-    st.metric(f"Ahorro Producido en {city}", f"{round(generacion_kwh,2)} kWh")
+    with col1:
+        st.subheader('Datos de Producción Energía')
+        st.metric(f"Ahorro Producido en {city}", f"{round(generacion_kwh,2)} kWh")
+
+    with col2:
+        st.subheader('Producción equivalente de Pellets')
+        st.metric(f"{round(generacion_kwh*4,9,2)} kgs de pellets")
 
     fig1 = go.Figure()
     fig1 = px.line(
