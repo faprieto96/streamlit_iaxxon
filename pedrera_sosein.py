@@ -212,9 +212,9 @@ if st.session_state['authentication_status']:
         st.subheader('Datos de Producción Energía')
         st.metric(f"Ahorro Producido en {city}", f"{round(generacion_kwh,2)} kWh")
 
-    with col2:
+    with col3:
         st.subheader('Producción equivalente de Pellets')
-        st.metric(f"", f"{round(generacion_pellets,2)} Kgs")
+        st.metric(f"Se han generado", f"{round(generacion_pellets,2)} Kgs de Pellets")
 
     fig1 = go.Figure()
     fig1 = px.line(
