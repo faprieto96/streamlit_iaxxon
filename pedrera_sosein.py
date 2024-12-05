@@ -190,6 +190,7 @@ if st.session_state['authentication_status']:
 
 
 
+    
 
     # Floor datetime to the nearest hour
     df_calculo_kwh["Timestamp_hour"] = df_calculo_kwh["Timestamp"].dt.floor("H")
@@ -206,15 +207,19 @@ if st.session_state['authentication_status']:
     generacion_kwh = pivot_df[pivot_df['kwh']>0]['kwh'].sum()
     generacion_pellets = float(generacion_kwh*4.9)
 
+    st.write('')
+    st.write('')
+    st.write('')
+
     col1, col2, col3 = st.columns(3)
 
     with col1:
         st.subheader('Datos de Producción Energía')
         st.metric(f"Ahorro Producido en {city}", f"{round(generacion_kwh,2)} kWh")
 
-    with col3:
+    with col2:
         st.subheader('Producción equivalente de Pellets')
-        st.metric(f"Se han generado", f"{round(generacion_pellets,2)} Kgs de Pellets")
+        st.metric(f"Producción en Kgs", f"{round(generacion_pellets,2)} Kgs")
 
     fig1 = go.Figure()
     fig1 = px.line(
@@ -232,6 +237,8 @@ if st.session_state['authentication_status']:
         #xaxis=dict(tickformat="%H:%M"),  # Mostrar solo hora y minutos
         template="plotly_white"
     )
+
+
 
     # Mostrar el gráfico
     st.plotly_chart(fig1, use_container_width=True)
@@ -251,24 +258,26 @@ if st.session_state['authentication_status']:
     
     # Sample data
 
+    if st.session_state["username"] == 'iaxxon':
 
-    # Create a plotly figure
-    fig = go.Figure()
-    df_test_temp = df_query1
 
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_ACS']['Temperatura detectada'], name = 'TCAP_ACS'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TF_VASO']['Temperatura detectada'], name = 'TF_VASO'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TPLACAS_SALIDA']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TPLACAS_SALIDA']['Temperatura detectada'], name = 'TPLACAS_SALIDA'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_VASO']['Temperatura detectada'], name = 'TCAP_VASO'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TC_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TC_VASO']['Temperatura detectada'], name = 'TC_VASO'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_VASO']['Temperatura detectada'], name = 'TDAC_VASO'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDS_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDS_ACS']['Temperatura detectada'], name = 'TDS_ACS'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDE_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDE_ACS']['Temperatura detectada'], name = 'TDE_ACS'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_ACS']['Temperatura detectada'], name = 'TDAF_ACS'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_ACS']['Temperatura detectada'], name = 'TDAC_ACS'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Temperatura detectada'], name = 'TINT_VASO'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Temperatura detectada'], name = 'TINT_ACS'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Temperatura detectada'], name = 'TDAF_VASO'))
+        # Create a plotly figure
+        fig = go.Figure()
+        df_test_temp = df_query1
 
-    st.subheader("Histórico datos de temperatura")
-    st.plotly_chart(fig, use_container_width=True)
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_ACS']['Temperatura detectada'], name = 'TCAP_ACS'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TF_VASO']['Temperatura detectada'], name = 'TF_VASO'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TPLACAS_SALIDA']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TPLACAS_SALIDA']['Temperatura detectada'], name = 'TPLACAS_SALIDA'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_VASO']['Temperatura detectada'], name = 'TCAP_VASO'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TC_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TC_VASO']['Temperatura detectada'], name = 'TC_VASO'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_VASO']['Temperatura detectada'], name = 'TDAC_VASO'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDS_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDS_ACS']['Temperatura detectada'], name = 'TDS_ACS'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDE_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDE_ACS']['Temperatura detectada'], name = 'TDE_ACS'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_ACS']['Temperatura detectada'], name = 'TDAF_ACS'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAC_ACS']['Temperatura detectada'], name = 'TDAC_ACS'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Temperatura detectada'], name = 'TINT_VASO'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Temperatura detectada'], name = 'TINT_ACS'))
+        fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Temperatura detectada'], name = 'TDAF_VASO'))
+
+        st.subheader("Histórico datos de temperatura")
+        st.plotly_chart(fig, use_container_width=True)
