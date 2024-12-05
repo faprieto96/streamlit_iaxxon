@@ -204,6 +204,7 @@ if st.session_state['authentication_status']:
     pivot_df['kwh_positive'] = pivot_df['kwh'].apply(lambda x: x if x > 0 else 0)
 
     generacion_kwh = pivot_df[pivot_df['kwh']>0]['kwh'].sum()
+    generacion_pellets = float(generacion_kwh*4.9)
 
     col1, col2, col3 = st.columns(3)
 
@@ -213,7 +214,7 @@ if st.session_state['authentication_status']:
 
     with col2:
         st.subheader('Producción equivalente de Pellets')
-        st.metric(f"{round(generacion_kwh*4.9,2)} kgs de pellets")
+        st.metric(f"Ahorro Producido", f"{round(generacion_pellets,2)} kWh")
 
     fig1 = go.Figure()
     fig1 = px.line(
