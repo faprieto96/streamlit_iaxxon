@@ -24,3 +24,10 @@ credentials:
       password: def # Will be hashed automatically
       roles: # Optional
       - viewer
+    pedrera:
+      email: s.garcia@huetorvega.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Pedrera
+      password: ADM_pedrera*24
+      role: pedrera
