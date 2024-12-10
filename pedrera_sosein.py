@@ -175,10 +175,27 @@ if st.session_state['authentication_status']:
     order by `Timestamp` DESC;"""
     query1 = query1.replace('var_time_resolution', str(var_time_resolution))
 
-    
+
 
 
     df = download_info (query1)
+
+    from datetime import datetime, timedelta
+    df['Timestamp'] = pd.to_datetime(df['Timestamp'], format='%d-%m-%Y %H:%M:%S')
+
+    # Definir el rango de minutos hacia atrás
+    minutes_back = var_time_resolution
+    current_time = datetime.now()  # Puedes usar otro punto de referencia si no es el tiempo actual
+    time_threshold = current_time - timedelta(minutes=minutes_back)
+
+    # Filtrar el DataFrame por el rango de tiempo
+    df = df[df['Timestamp'] >= time_threshold]
+
+    # Mostrar resultados
+    print(f"Current Time: {current_time}")
+    print("Filtered DataFrame:")
+    print(df)
+    st.write(df)
 
 
     df_calculo_kwh = df.copy()
@@ -188,9 +205,6 @@ if st.session_state['authentication_status']:
 
 
 
-
-
-    
 
     # Floor datetime to the nearest hour
     df_calculo_kwh["Timestamp_hour"] = df_calculo_kwh["Timestamp"].dt.floor("H")
