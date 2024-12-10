@@ -192,10 +192,8 @@ if st.session_state['authentication_status']:
     df = df[df['Timestamp'] >= time_threshold]
 
     # Mostrar resultados
-    print(f"Current Time: {current_time}")
-    print("Filtered DataFrame:")
-    print(df)
-    st.write(df)
+    
+    #st.write(df)
 
 
     df_calculo_kwh = df.copy()
@@ -249,7 +247,8 @@ if st.session_state['authentication_status']:
         xaxis_title="Hora del Día",
         yaxis_title="Generación (kWh)",
         #xaxis=dict(tickformat="%H:%M"),  # Mostrar solo hora y minutos
-        template="plotly_white"
+        template="plotly_white",
+        hovermode='x unified'
     )
 
 
@@ -292,6 +291,12 @@ if st.session_state['authentication_status']:
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Temperatura detectada'], name = 'TINT_VASO'))
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Temperatura detectada'], name = 'TINT_ACS'))
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Temperatura detectada'], name = 'TDAF_VASO'))
-
+        fig.update_layout(
+            xaxis_title="Datos de temperatura",
+            yaxis_title="Grados Centígrados (ºC)",
+            #xaxis=dict(tickformat="%H:%M"),  # Mostrar solo hora y minutos
+            template="plotly_white",
+            hovermode='x unified'
+        )
         st.subheader("Histórico datos de temperatura")
         st.plotly_chart(fig, use_container_width=True)
