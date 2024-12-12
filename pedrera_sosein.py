@@ -217,7 +217,7 @@ if st.session_state['authentication_status']:
     pivot_df['kwh_positive'] = pivot_df['kwh'].apply(lambda x: x if x > 0 else 0)
 
     generacion_kwh = pivot_df[pivot_df['kwh']>0]['kwh'].sum()
-    generacion_pellets = float(generacion_kwh*4.9)
+    generacion_pellets = float(generacion_kwh/4.9)
 
     st.write('')
     st.write('')
