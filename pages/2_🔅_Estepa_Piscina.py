@@ -18,33 +18,12 @@ import os
 #####################################################################################################################
 # Configuración página
 #####################################################################################################################
-#st.set_page_config(layout="wide")
-
-
-
-
-
 
 # Variables
 city = "Estepa,ES"
 api = "f8b240ffa80eee036066e32f79b95124"
 url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&APPID={api}&units=metric"
-Nombre_complejo_instalacion = "Pabellón Estepa"
-
-
-
-
-#####################################################################################################################
-# Configuración acceso y autenticación
-#####################################################################################################################
-with open(os.path.join(os.getcwd(), 'config.yaml')) as file:
-    config = yaml.load(file, Loader=SafeLoader)
-
-# Pre-hashing all plain text passwords once
-# stauth.Hasher.hash_passwords(config['credentials'])
-
-
-
+Nombre_complejo_instalacion = "Piscina Estepa"
 
 
 #####################################################################################################################
@@ -55,7 +34,7 @@ import influxdb_client
 token = "mqo_DwUps71AVWT_o5seGC3Y4qSskDO0iUiUjLtgIGj_Up4v1kmADazokM9mRUoNv6I6ryDgv7pgQguGcjB3wQ=="
 org = "a.marana@equsdesign.com"
 host = "https://eastus-1.azure.cloud2.influxdata.com"
-bucket = "cf_arjona"
+bucket = "Estepa_Piscina_v3"
 
 client = influxdb_client.InfluxDBClient(
     url=host,
@@ -163,68 +142,9 @@ def get_data(time_period):
 
     # Formatear las fechas en el formato aceptado por InfluxDB
 
-
     # Construir la consulta
     query_api = client.query_api()
-    query= f'from (bucket: "cf_arjona")\
-    |> range(start: -{start_time})\
-    |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")'
-
-    result = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query.strip())
-    return result
-
-def get_kwh(time_period):
-
-    # Obtener la fecha actual
-    end_time = datetime.utcnow()
-
-    if time_period == '1 hora':
-        start_time = '1h'
-    if time_period == '1 día':
-        start_time = '1d'
-    elif time_period == '2 días':
-        start_time = '2d'
-    elif time_period == '7 días':
-        start_time = '7d'
-    elif time_period == '1 mes':
-        start_time = '31d'
-    elif time_period == '1 año':
-        start_time = '1y'
-
-    # Formatear las fechas en el formato aceptado por InfluxDB
-
-    # Construir la consulta   
-    query_api = client.query_api()
-    query= f'from (bucket: "Estepa_Pabellon")\
-    |> range(start: -{start_time})\
-    |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")'
-
-    result = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query.strip())
-    return result
-
-def get_kwh(time_period):
-
-    # Obtener la fecha actual
-    end_time = datetime.utcnow()
-
-    if time_period == '1 hora':
-        start_time = '1h'
-    if time_period == '1 día':
-        start_time = '1d'
-    elif time_period == '2 días':
-        start_time = '2d'
-    elif time_period == '7 días':
-        start_time = '7d'
-    elif time_period == '1 mes':
-        start_time = '31d'
-    elif time_period == '1 año':
-        start_time = '1y'
-
-    # Formatear las fechas en el formato aceptado por InfluxDB
-    
-    # Construir la consulta   
-    query_api = client.query_api()
-    query = f'''from(bucket: "Estepa_Pabellon")\
+    query = f'''from(bucket: "Estepa_Piscina_v3")\
     |> range(start: -{start_time})\
     |> filter(fn: (r) => r["_measurement"] == "prueba")\
     |> filter(fn: (r) => r["_field"] == "TINT" or r["_field"] == "pump" or r["_field"] == "TDAF")\
@@ -237,21 +157,21 @@ def get_kwh(time_period):
     return result
 
 query_api = client.query_api()
-query_fan = f'''from(bucket: "Estepa_Pabellon")\
+query_fan = f'''from(bucket: "Estepa_Piscina_v3")\
     |> range(start: -15m)\
     |> filter(fn: (r) => r["_field"] == "fan")\
     |> aggregateWindow(every: 1m, fn: last, createEmpty: false)\
     |> yield(name: "last")\
-'''
+    '''
 
-query_pump = f'''from(bucket: "Estepa_Pabellon")\
+query_pump = f'''from(bucket: "Estepa_Piscina_v3")\
     |> range(start: -15m)\
     |> filter(fn: (r) => r._measurement == "prueba")\
     |> filter(fn: (r) => r._field == "pump")
     |> yield(name: "last")\
-'''
+    '''
 to_drop = ['result', 'table', '_measurement']
-   
+
 dffan = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query_fan)
 if not isinstance(dffan, list):
     dffan = [dffan]
@@ -283,7 +203,7 @@ df['TCAP']=df['TCAP'].round(2)
 df['TDAC']=df['TDAC'].round(2)
 df['TINT']=df['TINT'].round(2)
 df2['_value']=df2['_value'].round(2)
-df.rename(columns = {'_time':'Tiempo'}, inplace = True)
+df.rename(columns = {'_time':'Tiempo'}, inplace = True) 
 
 #######################################
 # DISEÑO PÁGINA STREAMLIT
@@ -300,6 +220,7 @@ with col1:
 with col2:
     st.metric(label="Temperatura Intercambiador", value=f"{df.TINT.iloc[-1]} °C")
     st.metric(label="Temperatura Depósito", value=f"{df.TDAC.iloc[-1]} °C")
+
 
 
 st.subheader("Gráficas")
@@ -355,3 +276,4 @@ with st.container():
                   hover_data={"Tiempo": "|%H:%M,  %d/%m"},
                   title='Temperatura Depósito Agua Fría')
     st.plotly_chart(fig, use_container_width=True,theme="streamlit", config=config)
+    

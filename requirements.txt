@@ -72,3 +72,4 @@ tzdata==2024.2
 urllib3==2.2.3
 wcwidth==0.2.13
 influxdb_client==1.41.0
+streamlit-toggle-switch==1.0.2
