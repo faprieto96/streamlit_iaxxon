@@ -11,10 +11,17 @@ credentials:
       last_name: IAXXON
       logged_in: False # Will be managed automatically
       password: ADM_sos*24 # Will be hashed automatically
-      roles: # Optional
-      - admin
-      - editor
-      - viewer
+      roles: admin
+
+
+    iaxxon2:
+      email: alberto@iaxxon.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Iaxxon Energia
+      password: ADM
+      role: admin
+
     rbriggs:
       email: rbriggs@gmail.com
       failed_login_attempts: 0 # Will be managed automatically

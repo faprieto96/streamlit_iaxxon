@@ -1,0 +1,104 @@
+cookie:
+  expiry_days: 500
+  key: some_signature_key
+  name: some_cookie_name
+credentials:
+  usernames:
+    aguilardelafrontera:
+      email: deportes@aguilardelafrontera.es
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Aguilar de la Frontera
+      password: $2b$12$vWn7D7SX4H6bQgExDLSA3OhRw/ljDKUgq.XSIQxubpYcfyJXlJnsW
+      role: aguilardelafrontera
+    arjona:
+      email: tecnicojuridico@arjona.es
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Arjona
+      password: $2b$12$0Is0vluZGEWSlQqNuZm0a.wf.jlYmozcEBa/rEzJqk9dQ5xieH3Ia
+      role: arjona
+    bodegashabla:
+      email: jls@bodegashabla.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Bodegas Habla
+      password: $2b$12$I1VRKbVT3fMSoRW7lfg50eI/FbVk7owz47sTyZFQXYQ5zO12t8.A2
+      role: bodegashabla
+    campingarcoiris:
+      email: lidia@iaxxon.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Camping Arco Iris
+      password: $2b$12$VzbSrfWArIHu85j/bxWf6eaGB4gmfo12avLbTeXYUHLaTxlxHIL2W
+      role: campingarcoiris
+    colegiodobrasil:
+      email: dir@casadobrasil.es
+      failed_login_attempts: 0
+      logged_in: false
+      name: Colegio Do Brasil
+      password: $2b$12$YAIj/TclKQWU9A0H2LbpcOp36QaWGL6G6l0ZNFWDD1cCBzBvM11Jy
+      role: colegiodobrasil
+    duplex:
+      email: rbriggs@gmail.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Estepa
+      password: $2b$12$5R5UWNnF0PAwDel2MmjBM.90t3ACWMlTZsibn/cOUYBTAbZNptRGe
+      role: duplex
+    estepa:
+      email: concejaliadeportesestepa@gmail.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Estepa
+      password: $2b$12$maFLU2RVw93TzhSFbELxseg0bICV1Nsbk1SPR3mVW4AwT5KmixVuW
+      role: estepa
+    huetorvega:
+      email: s.garcia@huetorvega.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Huetor Vega
+      password: $2b$12$M2CcVw..0u4cz5iHXlVZJuDn2EJQXV9zTPEviZFYt7UPpbEeb2.X2
+      role: huetorvega
+    iaxxon:
+      email: alberto@iaxxon.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Iaxxon Energia
+      password: ADM
+      role: admin
+    pedrera:
+      email: s.garcia@huetorvega.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Pedrera
+      password: $2b$12$YWlem4L9th1OfIHuU7S5MekmTM8mLUIrdmJFZjtJLg/mmCDEXfzV2
+      role: pedrera
+    priegodecordoba:
+      email: vicente.gallego@aytopriegodecordoba.es
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Priego de Cordoba
+      password: $2b$12$JpQyMeGKPx4mjH1hzKwrhu6Ih7AtrlBY2X9ZQ3tFNRKbPAcxuJ9TO
+      role: priegodecordoba
+    pruebasosein:
+      email: urbanismo@villanuevadecordoba.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Villanueva de Cordoba
+      password: $2b$12$BcmV869McdNOW7P4RdeWx.mirBbB816goFOtopas4miJAY7W9QhBO
+      role: pruebasosein
+    villadelrio:
+      email: interventor@villadelrio.es
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Villa Del Rio
+      password: $2b$12$7y5O8wpABLT68kC2WCIrB.4mTkaAWvD3Y5ZVvtO5C/M/bkvILgpZ6
+      role: villadelrio
+    villanuedevacordoba:
+      email: urbanismo@villanuevadecordoba.com
+      failed_login_attempts: 0
+      logged_in: false
+      name: Ayto. Villanueva de Cordoba
+      password: $2b$12$vh0/m9Ncyu.YYzOitESe9O5Le4.YsY7SPGnmCgpeiAEXXY27zV.OC
+      role: villanuevadecordoba
