@@ -97,7 +97,7 @@ if st.session_state['roles'] == "admin":
 else:
     pages = {
         "Resources": [
-            st.Page("pages/99_🏢_Recursos.py", title="Conoce IAXXON"),
+            st.Page("pages/sin_iniciar_sesion.py", title=""),
         ],
     }
 
