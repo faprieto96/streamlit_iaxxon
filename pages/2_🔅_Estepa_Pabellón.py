@@ -22,10 +22,6 @@ import os
 
 
 
-if not st.session_state.get("authentication_status"):
-    st.warning("Debe iniciar sesión para acceder a esta página.")
-    st.stop()  # Detener la ejecución de la página si no está autenticado
-
 
 
 
