@@ -168,7 +168,7 @@ def get_data(time_period):
     |> range(start: -{start_time})\
     |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")'
 
-    result = query_api.query_data_frame(org=st.secrets.db_credentials.org, query=query.strip())
+    result = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query.strip())
     return result
 
 def get_kwh(time_period):
@@ -202,7 +202,7 @@ def get_kwh(time_period):
     |> filter(fn: (r) => r["_field"] == "energia_kwh")\
     |> sum()'''
 
-    result = query_api.query_data_frame(org=st.secrets.db_credentials.org, query=query)
+    result = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query)
     return result
 
 query_api = client.query_api()
@@ -221,7 +221,7 @@ query_pump = f'''from(bucket: "piscina_villanueva")\
 '''
 to_drop = ['result', 'table', '_measurement']
    
-dffan = query_api.query_data_frame(org=st.secrets.db_credentials.org, query=query_fan)
+dffan = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query_fan)
 if not isinstance(dffan, list):
     dffan = [dffan]
 dffan = pd.concat(dffan, ignore_index=True)
@@ -237,7 +237,7 @@ df.drop(to_drop, inplace=True, axis=1)
 df.sort_values(by='_time', ascending=True, inplace=True)
 
 estado_ventilador = dffan['_value'].iloc[-1]  # Tomamos el último valor de la serie de tiempo
-dfpump = query_api.query_data_frame(org=st.secrets.db_credentials.org, query=query_pump)
+dfpump = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query_pump)
 if not isinstance(dfpump, list):
     dfpump = [dfpump]
 dfpump = pd.concat(dfpump, ignore_index=True)
