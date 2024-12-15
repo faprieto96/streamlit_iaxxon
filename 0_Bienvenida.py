@@ -86,11 +86,6 @@ if st.session_state['roles'] == "admin":
 
             st.Page("pages/11_🔅_CF_Villario.py", title="CF Villario"),
 
-            
-
-
-
-
         ],
         "Recursos": [
             st.Page("pages/99_🏢_Recursos.py", title="Conoce IAXXON"),
@@ -102,7 +97,7 @@ if st.session_state['roles'] == "admin":
 else:
     pages = {
         "Resources": [
-            st.Page("pages/99_Recursos.py", title="Conoce IAXXON"),
+            st.Page("pages/99_🏢_Recursos.py", title="Conoce IAXXON"),
         ],
     }
 
