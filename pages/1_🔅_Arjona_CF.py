@@ -188,8 +188,8 @@ def get_kwh(time_period):
         start_time = '1y'
 
     # Formatear las fechas en el formato aceptado por InfluxDB
-    
-    # Construir la consulta   
+
+    # Construir la consulta
     query_api = client.query_api()
     query = f'''from(bucket: "cf_arjona")\
     |> range(start: -{start_time})\

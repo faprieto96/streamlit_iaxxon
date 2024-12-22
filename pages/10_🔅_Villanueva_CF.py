@@ -190,8 +190,8 @@ def get_kwh(time_period):
         start_time = '1y'
 
     # Formatear las fechas en el formato aceptado por InfluxDB
-    
-    # Construir la consulta   
+
+    # Construir la consulta
     query_api = client.query_api()
     query = f'''from(bucket: "cf_villanueva")\
     |> range(start: -{start_time})\
@@ -220,7 +220,7 @@ query_pump = f'''from(bucket: "cf_villanueva")\
     |> yield(name: "last")\
 '''
 to_drop = ['result', 'table', '_measurement']
-   
+
 dffan = query_api.query_data_frame(org="a.marana@equsdesign.com", query=query_fan)
 if not isinstance(dffan, list):
     dffan = [dffan]

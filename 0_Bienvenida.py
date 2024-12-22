@@ -51,14 +51,16 @@ elif st.session_state['authentication_status'] is None:
 
 
 
-
-
-
-
-
-
+#"Supervisión Instalaciones": [
+#            st.Page("pages/00_🔅_Inicio.py", title="Supervisión"),
+#        ],
+################################################################################################
+# Role administrador
 if st.session_state['roles'] == "admin":
     pages = {
+        "IAXXON": [
+            st.Page("pages/00_🔅_Inicio.py", title="Gestión instalaciones"),
+        ],
         "Sevilla": [
             st.Page("pages/0_🔅_Pedrera.py", title="Pedrera"),
             st.Page("pages/2_🔅_Estepa_Pabellón.py", title="Pabellón de Estepa"),
@@ -80,6 +82,7 @@ if st.session_state['roles'] == "admin":
         ],
         "Jaén": [
             st.Page("pages/1_🔅_Arjona_CF.py", title="Arjona"),
+            st.Page("pages/1_🔅_Arjona_CF2.py", title="Arjona2"),
         ],
         "Madrid": [
             st.Page("pages/4_🔅_Colegio_do_Brasil.py", title="Colegio do Brasil"),
@@ -94,6 +97,8 @@ if st.session_state['roles'] == "admin":
         ],
     }
 
+################################################################################################
+# Role sin iniciar sesión
 
 else:
     pages = {

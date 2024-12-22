@@ -193,9 +193,9 @@ def get_kwh(time_period):
 
     # Formatear las fechas en el formato aceptado por InfluxDB
 
-    # Construir la consulta   
+    # Construir la consulta
     query_api = client.query_api()
-    query= f'from (bucket: "Estepa_Pabellon")\
+    query= f'from (bucket: "Estepa_Piscina_v7")\
     |> range(start: -{start_time})\
     |> pivot(rowKey:["_time"], columnKey: ["_field"], valueColumn: "_value")'
 
@@ -224,7 +224,7 @@ def get_kwh(time_period):
     
     # Construir la consulta   
     query_api = client.query_api()
-    query = f'''from(bucket: "Estepa_Pabellon")\
+    query = f'''from(bucket: "Estepa_Piscina_v7")\
     |> range(start: -{start_time})\
     |> filter(fn: (r) => r["_measurement"] == "prueba")\
     |> filter(fn: (r) => r["_field"] == "TINT" or r["_field"] == "pump" or r["_field"] == "TDAF")\
@@ -237,14 +237,14 @@ def get_kwh(time_period):
     return result
 
 query_api = client.query_api()
-query_fan = f'''from(bucket: "Estepa_Pabellon")\
+query_fan = f'''from(bucket: "Estepa_Piscina_v7")\
     |> range(start: -15m)\
     |> filter(fn: (r) => r["_field"] == "fan")\
     |> aggregateWindow(every: 1m, fn: last, createEmpty: false)\
     |> yield(name: "last")\
 '''
 
-query_pump = f'''from(bucket: "Estepa_Pabellon")\
+query_pump = f'''from(bucket: "Estepa_Piscina_v7")\
     |> range(start: -15m)\
     |> filter(fn: (r) => r._measurement == "prueba")\
     |> filter(fn: (r) => r._field == "pump")

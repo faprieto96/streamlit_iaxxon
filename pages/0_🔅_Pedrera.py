@@ -250,7 +250,6 @@ if st.session_state['authentication_status']:
 
     if st.session_state["username"] == 'iaxxon':
 
-
         # Create a plotly figure
         fig = go.Figure()
         df_test_temp = df_query1
