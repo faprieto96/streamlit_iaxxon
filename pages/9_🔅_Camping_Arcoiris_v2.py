@@ -142,7 +142,7 @@ def download_info (query1):
 query1 = """
 SELECT instalacion, datetime, TCAP, TEXT, TDAC, TINT, TAC1, TRET,TDAF, fan, pump, heat
 FROM sosein_automatization.sensor_data_iaxxon AS s
-WHERE instalacion = '869951035898125' and (datetime > NOW() - INTERVAL var_time_resolution MINUTE)
+WHERE instalacion = '869951036734600' and (datetime > NOW() - INTERVAL var_time_resolution MINUTE)
 order by datetime desc;
 """
 
