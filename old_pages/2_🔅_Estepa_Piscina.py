@@ -249,9 +249,9 @@ st.markdown('''
         color: white;
         }
     </styles>
-    ''', 
+    ''',
     unsafe_allow_html=True
-) 
+)
 
 with st.container():
     fig = px.line(df, x="Tiempo", y="TCAP",
@@ -276,4 +276,3 @@ with st.container():
                   hover_data={"Tiempo": "|%H:%M,  %d/%m"},
                   title='Temperatura Depósito Agua Fría')
     st.plotly_chart(fig, use_container_width=True,theme="streamlit", config=config)
-    

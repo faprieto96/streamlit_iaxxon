@@ -20,12 +20,10 @@ import os
 #####################################################################################################################
 
 # Variables
-city = "Arjona,ES"
+city = "Estepa,ES"
 api = "f8b240ffa80eee036066e32f79b95124"
 url = f"https://api.openweathermap.org/data/2.5/weather?q={city}&APPID={api}&units=metric"
-Nombre_complejo_instalacion = "Arjona, España"
-
-
+Nombre_complejo_instalacion = "Estepa, España"
 
 #####################################################################################################################
 # API TIEMPO
@@ -88,7 +86,7 @@ if st.session_state['authentication_status']:
         # Display the custom HTML
         st.markdown(custom_html, unsafe_allow_html=True)
         # Lista de opciones para el desplegable
-        options = ['1 hora', '1 día', '2 días', '7 días', '1 mes', '1 año']
+        options = ['7 días', '1 hora', '1 día', '2 días', '1 mes', '1 año']
         time_period = st.selectbox('Selecciona el período de tiempo:', options)
 
         def calculo_horas(time_period):
@@ -110,7 +108,7 @@ if st.session_state['authentication_status']:
         var_time_resolution = calculo_horas(time_period)
 
     with col3:
-        st.subheader("Complejo Deportivo de Arjona")
+        st.subheader("Campo de Fútbol de Estepa")
         st.metric(f"Clima en {city}", f"{temp} °C")  # Mostrar temperatura con unidad
 
 
@@ -144,7 +142,7 @@ def download_info (query1):
 query1 = """
 SELECT instalacion, datetime, TCAP, TEXT, TDAC, TINT, TAC1, TRET,TDAF, fan, pump, heat
 FROM sosein_automatization.sensor_data_iaxxon AS s
-WHERE instalacion = 'cfarjona' and (datetime > NOW() - INTERVAL var_time_resolution MINUTE)
+WHERE instalacion = '869951035898125' and (datetime > NOW() - INTERVAL var_time_resolution MINUTE)
 order by datetime desc;
 """
 
@@ -160,6 +158,7 @@ time_threshold = current_time - timedelta(minutes=minutes_back)
 
 df_test.fillna(0, inplace=True)
 df_test['energia_producida'] = (df_test['TINT'] - df_test['TDAC'])*df_test['pump']* 0.046
+df_test['energia_producida'] = df_test['energia_producida'].apply(lambda x: x if x > 0 else 0)
 
 
 col1, col2, col3 = st.columns(3)
@@ -179,7 +178,9 @@ from plotly.subplots import make_subplots
 st.subheader("Evolución Temperaturas")
 fig_agua = go.Figure()
 fig_agua.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TDAF'], name = 'Temp. Agua fria'))
-fig_agua.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TCAP'], name = 'Temp Depósito Agua Caliente'))
+fig_agua.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TDAC'], name = 'Temp Depósito Agua Caliente'))
+fig_agua.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TCAP'], name = 'Temp. Captador'))
+fig_agua.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TINT'], name = 'Temp Intercambiador'))
 fig_agua.update_layout(
     xaxis_title="Temperatura Captador",
     yaxis_title="Grados Centígrados (ºC)",
@@ -191,42 +192,45 @@ st.plotly_chart(fig_agua, use_container_width=True)
 
 
 
-st.subheader("Evolución Temperaturas Captador")
-fig_capt = go.Figure()
-fig_capt.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TCAP'], name = 'Temp. Captador'))
-fig_capt.add_trace(go.Line(x=pd.to_datetime(df_test['datetime']), y=df_test['TINT'], name = 'Temp Intercambiador'))
-fig_capt.update_layout(
-    xaxis_title="Temperatura Captador",
-    yaxis_title="Grados Centígrados (ºC)",
-    #xaxis=dict(tickformat="%H:%M"),  # Mostrar solo hora y minutos
-    template="plotly_white",
-    hovermode='x unified'
-)
-st.plotly_chart(fig_capt, use_container_width=True)
-
 
 if st.session_state["username"] == 'iaxxon':
     fig = make_subplots(specs=[[{"secondary_y": True}]])
     df_test_temp = df_test
 
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TCAP'], name = 'TCAP'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TINT'], name = 'TINT'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TEXT'], name = 'TEXT'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TDAC'], name = 'TDAC'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TAC1'], name = 'TAC1'))
-    fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TRET'], name = 'TRET'))
-    fig.add_trace(go.Bar(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['fan'], name='Fan (Estado)'),secondary_y=True)
-    fig.add_trace(go.Bar(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['pump'], name='Pump (Estado)'),secondary_y=True)
-    fig.add_trace(go.Bar(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['heat'], name='Heat (Estado)'),secondary_y=True)
+    # Scatter traces for temperature data
+    fig.add_trace(go.Scatter(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TCAP'], name='TCAP'))
+    fig.add_trace(go.Scatter(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TINT'], name='TINT'))
+    fig.add_trace(go.Scatter(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TEXT'], name='TEXT'))
+    fig.add_trace(go.Scatter(x=pd.to_datetime(df_test_temp['datetime']), y=df_test_temp['TDAC'], name='TDAC'))
 
+    # Bar traces for binary state data
+    fig.add_trace(go.Scatter(
+        x=pd.to_datetime(df_test_temp['datetime']),
+        y=df_test_temp['fan'],
+        name='Fan (Estado)',
+    ), secondary_y=True)
+    fig.add_trace(go.Scatter(
+        x=pd.to_datetime(df_test_temp['datetime']),
+        y=df_test_temp['pump'],
+        name='Pump (Estado)',
+    ), secondary_y=True)
+    fig.add_trace(go.Scatter(
+        x=pd.to_datetime(df_test_temp['datetime']), 
+        y=df_test_temp['heat'], 
+        name='Heat (Estado)', 
+    ), secondary_y=True)
+
+    # Layout adjustments
     fig.update_layout(
         xaxis_title="Datos de temperatura",
         yaxis_title="Grados Centígrados (ºC)",
         yaxis2_title="Estado (Binario)",
-        #xaxis=dict(tickformat="%H:%M"),  # Mostrar solo hora y minutos
+        yaxis2=dict(range=[0, 1.1]),  # Match binary state values
         template="plotly_white",
-        hovermode='x unified'
+        hovermode='x unified',
+        barmode='overlay'  # Bars overlay instead of stacking
     )
+
     st.subheader("Histórico datos de temperatura")
     st.plotly_chart(fig, use_container_width=True)
 

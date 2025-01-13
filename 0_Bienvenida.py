@@ -63,33 +63,30 @@ if st.session_state['roles'] == "admin":
         ],
         "Sevilla": [
             st.Page("pages/0_🔅_Pedrera.py", title="Pedrera"),
-            st.Page("pages/2_🔅_Estepa_Pabellón.py", title="Pabellón de Estepa"),
-            st.Page("pages/2_🔅_Estepa_Piscina.py", title="Piscina de Estepa"),
-            st.Page("pages/2_🔅_Estepa_Campo_Futbol.py", title="Campo de Fútbol de Estepa"),
-            st.Page("pages/8_🔅_Toyota_Hispaljarafe.py", title="Toyota Hispaljarafe"),
+            st.Page("pages/2_🔅_Estepa_Pabellon_v2.py", title="Pabellón de Estepa"),
+            st.Page("pages/2_🔅_Estepa_Piscina_v2.py", title="Piscina de Estepa"),
+            st.Page("pages/2_🔅_Estepa_CF_v2.py", title="Campo de Fútbol de Estepa"),
+            st.Page("pages/8_🔅_Toyota_Hispaljarafe_v2.py", title="Toyota Hispaljarafe"),
         ],
-
         "Córdoba": [
-            st.Page("pages/6_🔅_Pabellón_Aguilar.py", title="Pabellón, Aguilar"),
-            st.Page("pages/7_🔅_Piscina_Priego.py", title="Piscina de Priego"),
-            st.Page("pages/10_🔅_Villanueva_CF.py", title="CF Villanueva de Córdoba"),
-            st.Page("pages/10_🔅_Villanueva_Piscina.py", title="Piscina Villanueva de Córdoba"),
-            st.Page("pages/11_🔅_CF_Villario.py", title="CF Villario"),
+            st.Page("pages/6_🔅_Pabellón_Aguilar_v2.py", title="Pabellón, Aguilar"),
+            st.Page("pages/7_🔅_Piscina_Priego_v2.py", title="Piscina de Priego"),
+            st.Page("pages/10_🔅_Villanueva_CF_v2.py", title="CF Villanueva de Córdoba"),
+            st.Page("pages/10_🔅_Villanueva_Piscina_v2.py", title="Piscina Villanueva de Córdoba"),
+            st.Page("pages/11_🔅_CF_Villario_v2.py", title="CF Villario"),
         ],
-
         "Granada": [
-            st.Page("pages/5_🔅_Huerto_Vega_Pabellón.py", title="Huerto Vega Pabellón"),
+            st.Page("pages/5_🔅_Huerto_Vega_Pabellon_v2.py", title="Huerto Vega Pabellón"),
         ],
         "Jaén": [
-            st.Page("pages/1_🔅_Arjona_CF.py", title="Arjona"),
-            st.Page("pages/1_🔅_Arjona_CF2.py", title="Arjona2"),
+            st.Page("pages/1_🔅_Arjona_CF_v2.py", title="Arjona CF"),
         ],
         "Madrid": [
-            st.Page("pages/4_🔅_Colegio_do_Brasil.py", title="Colegio do Brasil"),
-            st.Page("pages/9_🔅_Camping_Arcoiris.py", title="Camping Arcoiris"),
+            st.Page("pages/4_🔅_Colegio_do_Brasil_v2.py", title="Colegio do Brasil"),
+            st.Page("pages/9_🔅_Camping_Arcoiris_v2.py", title="Camping Arcoiris"),
         ],
         "Burgos": [
-            st.Page("pages/3_🔅_Duplex_Burgos.py", title="Duplex"),
+            st.Page("pages/3_🔅_Duplex_Burgos_v2.py", title="Duplex Burgos"),
         ],
         "Recursos": [
             st.Page("pages/99_🏢_Recursos.py", title="Conoce IAXXON"),

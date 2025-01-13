@@ -22,7 +22,6 @@ from datetime import datetime, timedelta
 def download_info (query1):
     db_url = 'mysql+mysqlconnector://admin_sos:ADM_sos*01@185.47.245.164/sosein_automatization'
     engine = create_engine(db_url)
-
     df = pd.read_sql(query1, engine)
 
     return df
@@ -49,21 +48,21 @@ df['suma'] = df['TCAP']+ df['TEXT']+df['TDAC']+df['TINT']+df['TAC1']+df['TRET']
 df['alerta'] = df['suma'].apply(lambda x: 'si' if x == 0 else 'no')
 del df['suma']
 mapeo_instalaciones = {
+    'piscina_estepa': 'Piscina de Estepa',
+    '869951035643216': 'Pabellón de Estepa',
+    '869951035512445': 'Dúplex',
+    '869951035648587': 'Bodegas Habla',
+    '869951035865579': 'Piscina Priego de Córdoba',
+    '869951035893563': 'Pabellón de Aguilar de la Fra.',
     '869951035898125': 'CF Estepa',
+    'pabellonhuetor': 'Pabellón Huétor Vega',
+    '869951036734600': 'Camping Arco Iris',
+    '869951036721243': 'Toyota Hispaljarafe',
+    'cfarjona': 'CF Arjona',
     'acsdobrasil': 'Colegio Mayor do Brasil',
     'cfvirrio': 'CF Villa del Río',
-    '869951035512445': 'Dúplex',
     'cfvillanueva': 'CF Villanueva de Córdoba',
-    '869951035643216': 'Pabellón de Estepa',
-    'piscina_estepa': 'Piscina de Estepa',
     'piscina_villanueva': 'Piscina Villanueva de Córdoba',
-    'pabellonhuetor': 'Pabellón Huétor Vega',
-    '869951035893563': 'Pabellón de Aguilar de la Fra.',
-    '869951035865579': 'Piscina Priego de Córdoba',
-    '869951036721243': 'Toyota Hispaljarafe',
-    '869951036734600': 'Camping Arco Iris',
-    'cfarjona': 'CF Arjona',
-    '869951035648587': 'Bodegas Habla',
     'sosein_prueba': 'sosein_prueba'
 }
 

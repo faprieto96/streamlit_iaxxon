@@ -14,10 +14,7 @@ import requests
 from sqlalchemy import create_engine, text
 import os
 
-
-
-
-
+from plotly.subplots import make_subplots
 
 
 #st.set_page_config(layout="wide", page_title="IAXXON Pedrera")
@@ -227,17 +224,12 @@ if st.session_state['authentication_status']:
         template="plotly_white",
         hovermode='x unified'
     )
-
-
-
-    # Mostrar el gráfico
     st.plotly_chart(fig1, use_container_width=True)
 
-    #st.dataframe(pivot_df[['Timestamp_hour','TINT_ACS','TDE_ACS','TINT_VASO','TPLACAS_SALIDA','kwh']])
+
 
 
     df_query1 = df.copy()
-
 
     df_query1.rename(columns={'signal_name': 'Nombre del sensor', 'valor': 'Temperatura detectada', 'Timestamp': 'Última actualización'}, inplace=True)
     # Parte de seguridad, pero la query ya está haciendo el trabajo
@@ -245,15 +237,29 @@ if st.session_state['authentication_status']:
 
     ####### MAKE A PLOT - TEMPERATURAS
 
-    
-    # Sample data
-
     if st.session_state["username"] == 'iaxxon':
 
-        # Create a plotly figure
-        fig = go.Figure()
-        df_test_temp = df_query1
+        query_all= """SELECT signal_name, valor, `Timestamp`
+        FROM sosein_automatization.datos_sensores_azure
+        where (STR_TO_DATE(`Timestamp`, '%d-%m-%Y %H:%i:%s')> NOW() - INTERVAL var_time_resolution MINUTE)
+        order by `Timestamp` DESC;"""
+        query_all = query_all.replace('var_time_resolution', str(var_time_resolution))
 
+        df = download_info (query_all)
+        df_test_temp = df.copy()
+        df['Timestamp'] = pd.to_datetime(df['Timestamp'], format='%d-%m-%Y %H:%M:%S')
+
+        # Definir el rango de minutos hacia atrás
+        minutes_back = var_time_resolution
+        current_time = datetime.now()  # Puedes usar otro punto de referencia si no es el tiempo actual
+        time_threshold = current_time - timedelta(minutes=minutes_back)
+
+        # Filtrar el DataFrame por el rango de tiempo
+        df = df[df['Timestamp'] >= time_threshold]
+        df.rename(columns={'signal_name': 'Nombre del sensor', 'valor': 'Temperatura detectada', 'Timestamp': 'Última actualización'}, inplace=True)
+        df_test_temp = df.copy()
+
+        fig = make_subplots(specs=[[{"secondary_y": True}]])
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TCAP_ACS']['Temperatura detectada'], name = 'TCAP_ACS'))
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TF_VASO']['Temperatura detectada'], name = 'TF_VASO'))
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TPLACAS_SALIDA']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TPLACAS_SALIDA']['Temperatura detectada'], name = 'TPLACAS_SALIDA'))
@@ -267,12 +273,41 @@ if st.session_state['authentication_status']:
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_VASO']['Temperatura detectada'], name = 'TINT_VASO'))
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TINT_ACS']['Temperatura detectada'], name = 'TINT_ACS'))
         fig.add_trace(go.Line(x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Última actualización']), y=df_test_temp[df_test_temp['Nombre del sensor']=='TDAF_VASO']['Temperatura detectada'], name = 'TDAF_VASO'))
+        # Bar traces for binary state data
+        fig.add_trace(go.Scatter(
+            x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='V_ACS']['Última actualización']),
+            y=df_test_temp[df_test_temp['Nombre del sensor']=='V_ACS']['Temperatura detectada'],
+            name='Ventilador ACS',
+        ), secondary_y=True)
+        fig.add_trace(go.Scatter(
+            x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='V_Vaso']['Última actualización']),
+            y=df_test_temp[df_test_temp['Nombre del sensor']=='V_Vaso']['Temperatura detectada'],
+            name='Ventilador Vaso',
+        ), secondary_y=True)
+        fig.add_trace(go.Scatter(
+            x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='B_ACS']['Última actualización']),
+            y=df_test_temp[df_test_temp['Nombre del sensor']=='B_ACS']['Temperatura detectada'],
+            name='Bomba ACS',
+        ), secondary_y=True)
+        fig.add_trace(go.Scatter(
+            x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='B_D_Vaso']['Última actualización']),
+            y=df_test_temp[df_test_temp['Nombre del sensor']=='B_D_Vaso']['Temperatura detectada'],
+            name='Bomba Deposito Vaso',
+        ), secondary_y=True)
+        fig.add_trace(go.Scatter(
+            x=pd.to_datetime(df_test_temp[df_test_temp['Nombre del sensor']=='A_PVaso']['Última actualización']),
+            y=df_test_temp[df_test_temp['Nombre del sensor']=='A_PVaso']['Temperatura detectada'],
+            name='Accionamiento Intercambiador Placas a Vaso',
+        ), secondary_y=True)
+
+        # Layout adjustments
         fig.update_layout(
             xaxis_title="Datos de temperatura",
             yaxis_title="Grados Centígrados (ºC)",
-            #xaxis=dict(tickformat="%H:%M"),  # Mostrar solo hora y minutos
+            yaxis2_title="Estado (Binario)",
             template="plotly_white",
-            hovermode='x unified'
+            hovermode='x unified',
+            barmode='overlay'  # Bars overlay instead of stacking
         )
         st.subheader("Histórico datos de temperatura")
         st.plotly_chart(fig, use_container_width=True)
