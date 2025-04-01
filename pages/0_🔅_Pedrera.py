@@ -182,7 +182,7 @@ if st.session_state['authentication_status']:
     df_calculo_kwh["Timestamp_hour"] = df_calculo_kwh["Timestamp"].dt.floor("H")
 
     # Group by variable and hourly Timestamp, and calculate mean
-    df_calculo_kwh_result = df_calculo_kwh.groupby(["signal_name", "Timestamp_hour"])["valor"].mean().reset_index()
+    df_calculo_kwh_result = df_calculo_kwh.groupby(["signal_name", "Timestamp_hour"])["valor"].sum().reset_index()
     pivot_df = df_calculo_kwh_result.pivot_table(index='Timestamp_hour', columns='signal_name', values='valor', aggfunc='first')
 
     # Resetear el índice para que 'timestamp' sea una columna normal
